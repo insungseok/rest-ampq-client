@@ -1,0 +1,31 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'com.geli.msa'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    compile "com.fasterxml.jackson.core:jackson-databind:2.10.0"
+    compile 'org.springframework.boot:spring-boot-starter-log4j2'
+}

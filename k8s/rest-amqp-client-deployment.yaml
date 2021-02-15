@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: rest-amqp-client
+    variant: dev
+  name: web-client-config
+  namespace: kube-is-test
+data:
+  AMQP_HOST: 10.11.64.243
+  AMQP_PORT: "5672"
+  AMQP_USERNAME: guest
+  TESTING: "False"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rest-amqp-client
+    variant: dev
+  name: web-client-deployment
+  namespace: kube-is-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-amqp-client
+      variant: dev
+  template:
+    metadata:
+      labels:
+        app: rest-amqp-client
+        name: web-client
+        variant: dev
+    spec:
+      containers:
+      - image: ininin3/rest-amqp-client:1.0
+        imagePullPolicy: Always
+        name: web-client-container
+        ports:
+        - containerPort: 8001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rest-amqp-client
+    variant: dev
+  name: web-client
+  namespace: kube-is-test
+spec:
+  ports:
+  - port: 80
+    targetPort: 8001
+  selector:
+    app: rest-amqp-client
+    name: web-client
+    variant: dev
+  type: LoadBalancer

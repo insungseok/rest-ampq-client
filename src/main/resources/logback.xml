@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOGS_PATH" value="/home/insung/workspace/logs"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm} %highlight([%-5level]) %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+    <appender name="ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_PATH}/rest-amqp-client.log</file>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/rest-amqp-client.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ROLLING_FILE_APPENDER" />
+    </root>
+
+    <logger name="com.geli.ms" level="DEBUG">
+	     <appender-ref ref="STDOUT" />
+	     <appender-ref ref="ROLLING_FILE_APPENDER" />
+    </logger>
+
+</configuration>

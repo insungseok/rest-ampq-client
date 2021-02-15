@@ -1,0 +1,24 @@
+server:
+  port: 8001
+
+geli:
+  weather:
+    endpoints: http://10.11.81.5:5000
+    moduleid: cooptimizer2
+
+spring:
+  rabbitmq:
+    host: 10.11.64.243
+    port: 5672
+    username: guest
+    password: guest
+
+amqp:
+  exchange: weather-service.exchange
+  routingkey:
+    pub:
+      current: request.current_weatherdata
+      forecasted: request.forecasted_weatherdata
+    sub:
+      current: cge.*.cooptimizer2.current
+      forecasted: cge.*.cooptimizer2.forecasted
