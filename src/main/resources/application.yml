@@ -3,12 +3,12 @@ server:
 
 geli:
   weather:
-    endpoints: http://10.11.81.5:5000
+    endpoints: ${WEATHER_ENDPOINT}
     moduleid: cooptimizer2
 
 spring:
   rabbitmq:
-    host: 10.11.64.243
+    host: ${RABBIT_ENDPOINT}
     port: 5672
     username: guest
     password: guest

@@ -7,10 +7,8 @@ metadata:
   name: web-client-config
   namespace: kube-is-test
 data:
-  AMQP_HOST: 10.11.64.243
-  AMQP_PORT: "5672"
-  AMQP_USERNAME: guest
-  TESTING: "False"
+  RABBIT_ENDPOINT: 10.11.64.243
+  WEATHER_ENDPOINT: http://10.11.81.5:5000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,7 +32,18 @@ spec:
         variant: dev
     spec:
       containers:
-      - image: ininin3/rest-amqp-client:1.0
+      - env:
+        - name: RABBIT_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              key: RABBIT_ENDPOINT
+              name: web-client-config
+        - name: WEATHER_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              key: WEATHER_ENDPOINT
+              name: web-client-config
+        image: ininin3/rest-amqp-client:1.0
         imagePullPolicy: Always
         name: web-client-container
         ports:
