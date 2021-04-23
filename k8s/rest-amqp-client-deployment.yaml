@@ -2,32 +2,51 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app: rest-amqp-client
+    app: weatherserivce
     variant: dev
   name: web-client-config
   namespace: kube-is-test
 data:
-  RABBIT_ENDPOINT: 10.11.64.243
-  WEATHER_ENDPOINT: http://10.11.81.5:5000
+  RABBIT_ENDPOINT: rabbitmq-svc
+  RABBIT_PORT: "5672"
+  WEATHER_ENDPOINT: http://weather-web-svc:5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: weatherserivce
+    variant: dev
+  name: web-client
+  namespace: kube-is-test
+spec:
+  ports:
+    - port: 80
+      targetPort: 8001
+  selector:
+    app: weatherserivce
+    variant: dev
+    name: web-client
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: rest-amqp-client
+    app: weatherserivce
     variant: dev
-  name: web-client-deployment
+  name: web-client
   namespace: kube-is-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rest-amqp-client
+      app: weatherserivce
       variant: dev
   template:
     metadata:
       labels:
-        app: rest-amqp-client
+        app: weatherserivce
         name: web-client
         variant: dev
     spec:
@@ -37,6 +56,11 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: RABBIT_ENDPOINT
+              name: web-client-config
+        - name: RABBIT_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: RABBIT_PORT
               name: web-client-config
         - name: WEATHER_ENDPOINT
           valueFrom:
@@ -48,21 +72,3 @@ spec:
         name: web-client-container
         ports:
         - containerPort: 8001
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: rest-amqp-client
-    variant: dev
-  name: web-client
-  namespace: kube-is-test
-spec:
-  ports:
-  - port: 80
-    targetPort: 8001
-  selector:
-    app: rest-amqp-client
-    name: web-client
-    variant: dev
-  type: LoadBalancer
