@@ -25,7 +25,7 @@ public class RestTemplateService {
         this.restTemplateAbstraction = restTemplateAbstraction;
     }
 
-    public String registerWeatherConfig(final String siteId, final String eosId) {
+    public String registerWeatherConfig(final String siteId, final String eosId, final int cItv, final int fItv) {
 
         ConfigRequest configRequest = new ConfigRequest();
         configRequest.setAction("WeatherRegistration");
@@ -34,8 +34,8 @@ public class RestTemplateService {
         configRequest.setModuleId(moduleid);
         configRequest.setLatitude(40.71);
         configRequest.setLongitude(74.00);
-        configRequest.setCurrWeatherInterval(1);
-        configRequest.setForecastedWeatherInterval(5);
+        configRequest.setCurrWeatherInterval(cItv);
+        configRequest.setForecastedWeatherInterval(fItv);
         configRequest.setFirstTelemetryTime(ZonedDateTime.now().toInstant().toEpochMilli());
 
         return restTemplateAbstraction.post(endpoints + "/api/v1/register", HttpHeaders.EMPTY, configRequest, String.class).getBody();

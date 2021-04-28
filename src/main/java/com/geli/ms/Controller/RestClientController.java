@@ -24,8 +24,8 @@ public class RestClientController {
     }
 
     @GetMapping("/config/registration")
-    public ResponseEntity<String> registerWeatherConfig(@RequestParam("siteId") final String siteId, @RequestParam("eosId") final String eosId) {
-        return ResponseEntity.ok(restTemplateService.registerWeatherConfig(siteId, eosId));
+    public ResponseEntity<String> registerWeatherConfig(@RequestParam("siteId") final String siteId, @RequestParam("eosId") final String eosId, @RequestParam("cItv") final int cItv, @RequestParam("fItv") final int fItv) {
+        return ResponseEntity.ok(restTemplateService.registerWeatherConfig(siteId, eosId, cItv, fItv));
     }
 
     @GetMapping("/config/deregistration")

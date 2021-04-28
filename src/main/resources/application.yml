@@ -7,11 +7,12 @@ geli:
     moduleid: cooptimizer2
 
 spring:
+
   rabbitmq:
     host: ${RABBIT_ENDPOINT}
     port: ${RABBIT_PORT}
-    username: guest
-    password: guest
+    username: ${AMQP_USERNAME}
+    password: ${AMQP_PASSWORD}
 
 amqp:
   exchange: weather-service.exchange
